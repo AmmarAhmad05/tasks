@@ -45,12 +45,7 @@ export function isValid(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
         return true;
     }
-    for (let i = 0; i < question.options.length; i++) {
-        if (answer === question.options[i]) {
-            return true;
-        }
-    }
-    return false;
+    return question.options.includes(answer);
 }
 
 /**
@@ -81,20 +76,11 @@ export function toShortForm(question: Question): string {
  * Check the unit tests for more examples of what this looks like!
  */
 export function toMarkdown(question: Question): string {
-    let markdown: string = "# ";
-    markdown += question.name + "\n";
-    markdown += question.body;
+    let markdown: string = "# " + question.name + "\n" + question.body;
     if (question.type === "short_answer_question") {
         return markdown;
     }
-    markdown += "\n";
-    for (let i = 0; i < question.options.length; i++) {
-        if (i === question.options.length - 1) {
-            markdown += "- " + question.options[i];
-        } else {
-            markdown += "- " + question.options[i] + "\n";
-        }
-    }
+    markdown += "\n" + question.options.map((opt) => "- " + opt).join("\n");
     return markdown;
 }
 
